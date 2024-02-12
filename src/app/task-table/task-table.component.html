@@ -1,0 +1,59 @@
+<table class="table mb-4">
+    <thead class="bg-secondary text-light">
+      <tr>
+        <th appHighlight color="red" scope="col">No.</th>
+        <th appHighlight color="blue" scope="col">Todo item</th>
+        <th appHighlight color="green" scope="col">Status</th>
+        <th appHighlight color="purple" scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody >
+      <ng-container *ngIf="tasks.length;else noItemsInTasks">
+       
+      <tr *ngFor="let task of tasks;index as i ; trackBy:trackById">
+        <th scope="row">{{i+1}}</th>
+        <td  [ngClass]="{'text-decoration-line-through': task.status == 3}">{{task.tittle}}</td>
+          <td >
+          <ng-container [ngSwitch]="task.status" >
+            <span *ngSwitchCase="1" class="text-danger">Pendding</span>
+            <span *ngSwitchCase="2" class="text-warning">In Progress</span>
+            <span *ngSwitchCase="3" class="text-success">Done!</span>
+            <span *ngSwitchCaseDefault class="text-dark">None</span>
+          </ng-container>
+          </td>
+        <td >
+
+          <ng-container  [ngSwitch]="task.status">
+
+            <app-icon-button *ngSwitchCase="1" label="Start"  color="outline-primary" icon="outline-primary" customClass="mx-1" (clicked)="changeStatus(task.id,2)"></app-icon-button>
+           <!--  <button *ngSwitchCase="1" type="button" class="btn btn-outline-primary mx-1" (click)="changeStatus(task.id,2)">Start</button> -->
+
+            <ng-container *ngSwitchCase="2">
+              <app-icon-button label="Finished"  color="outline-success" icon="check-lg" customClass="mx-1" (clicked)="changeStatus(task.id,3)" ></app-icon-button> 
+              <!-- <button  type="button" class="btn btn-outline-success mx-1" (click)="changeStatus(task.id,3)"><i class="bi bi-check-lg"></i>Finished</button> -->
+
+              <app-icon-button label="Pend"  color="outline-success" icon="outline-secondary" customClass="mx-1" (clicked)="changeStatus(task.id,1)"> </app-icon-button>
+              <!-- <button  type="button" class="btn btn-outline-secondary mx-1" (click)="changeStatus(task.id,1)">Pend</button> -->
+              </ng-container>
+
+              <app-icon-button label="Undo"  color="outline-warning" icon="outline-warning" customClass="mx-1" (clicked)="changeStatus(task.id,2)"></app-icon-button>  
+            <!-- <button *ngSwitchCase="3" type="button" class="btn btn-outline-warning mx-1" (click)="changeStatus(task.id,2)">Undo</button>    -->
+          </ng-container>
+
+          <app-icon-button label="Delete"  color="outline-danger" icon="trash3" customClass="mx-1" (clicked)="deleteTask(task.id)"></app-icon-button>
+          <!-- <button type="button" class="btn btn-outline-danger" (click)="deleteTask(task.id)">
+            <i class="bi bi-trash3"></i>Delete</button> -->
+        </td>
+      </tr>
+      </ng-container>
+      <ng-template #noItemsInTasks>
+        <tr>
+          <td colspan="4">
+              <h3 class="text-center">All Tasks Done!</h3>
+        </td>
+      </tr>
+        
+      </ng-template>
+    </tbody>
+
+  </table>
